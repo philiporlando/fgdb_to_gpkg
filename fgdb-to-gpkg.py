@@ -3,7 +3,7 @@ import fiona
 
 
 def fgdb_to_gpkg(fgdb_path, gpkg_path, quiet=True):
-    """Converts all feature classes within the FileGeoDataBase into layers within the GeoPackage.
+    """Converts all feature classes within a FileGeoDataBase to new layers within a GeoPackage.
 
     :param fgdb_path: file path of an Esri FileGeoDataBase (.gdb)
     :type fgdb_path: str
