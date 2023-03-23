@@ -37,5 +37,5 @@ from fgdb_to_gpkg import fgdb_to_gpkg
 input_fgdb_path = "/path/to/my_fgdb.gdb"
 output_gpkg_path = "/path/to/my_gpkg.gpkg"
 
-fgdb_to_gpkg(input_gdb_path, output_gpkg_path)
+fgdb_to_gpkg(input_fgdb_path, output_gpkg_path, quiet=False)
 ```
