@@ -7,10 +7,5 @@ authors = [
     ]
 
 [project.dependencies]
-fiona
-geopandas
-
-[project.optional-dependencies]
-test = [
-  pytest
-]
+fiona = "1.9.2"
+geopandas = "0.12.2"
