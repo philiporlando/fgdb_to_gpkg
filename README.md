@@ -22,7 +22,7 @@ pip install git+https://github.com/philiporlando/fgdb_to_gpkg
 To use `fgdb_to_gpkg` from the command line, simply call the `fgdb_to_gpkg` command with the path to the input File GeoDatabase and the path to the output GeoPackage:
 
 ```
-pipenv run python -m fgdb_to_gpkg <input_fgdb_path> <output_gpkg_path>
+pipenv run python -m fgdb_to_gpkg <input_fgdb_path> <output_gpkg_path> --verbose
 ```
 
 ### Module Usage
@@ -37,5 +37,5 @@ from fgdb_to_gpkg import fgdb_to_gpkg
 input_fgdb_path = "/path/to/my_fgdb.gdb"
 output_gpkg_path = "/path/to/my_gpkg.gpkg"
 
-fgdb_to_gpkg(input_fgdb_path, output_gpkg_path, quiet=False)
+fgdb_to_gpkg(input_fgdb_path, output_gpkg_path, verbose=True)
 ```
