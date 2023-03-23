@@ -4,9 +4,9 @@ import fiona
 
 
 def fgdb_to_gpkg(fgdb_path, gpkg_path, verbose=False):
-    """Converts all feature classes within a FileGeoDataBase to new layers within a GeoPackage.
+    """Converts all feature classes within a File GeoDataBase to new layers within a GeoPackage.
 
-    :param fgdb_path: file path of an Esri FileGeoDataBase (.gdb)
+    :param fgdb_path: file path of an Esri File GeoDataBase (.gdb)
     :type fgdb_path: str
 
     :param gpkg_path: file path of a GeoPackage (.gpkg)
@@ -16,7 +16,7 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, verbose=False):
     :type bool, optional
     """
 
-    # List all feature classes within FileGeoDataBase
+    # List all feature classes within File GeoDataBase
     fc_list = fiona.listlayers(fgdb_path)
 
     # Loop through each feature class
@@ -33,7 +33,7 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, verbose=False):
 
 if __name__ == '__main__':
     # Set up argparse to parse command line arguments
-    parser = argparse.ArgumentParser(description='Convert an Esri FileGeoDatabase to a GeoPackage')
+    parser = argparse.ArgumentParser(description='Convert an Esri File GeoDatabase to a GeoPackage')
     parser.add_argument('fgdb_path', type=str, help='path to the File GeoDatabase')
     parser.add_argument('gpkg_path', type=str, help='path to the GeoPackage to create')
     parser.add_argument('--verbose', action='store_true', help='print the names of each feature class being converted')
