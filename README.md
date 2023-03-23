@@ -1,6 +1,6 @@
 # fgdb_to_gpkg
 
-`fgdb_to_gpkg` is a Python package that converts all feature classes within a specific Esri File GeoDatabase into layers within a new GeoPackage. This package is designed to be used from the command line or imported as a module.
+`fgdb_to_gpkg` is a Python package that converts all feature classes within a specific [Esri File GeoDatabase](https://pro.arcgis.com/en/pro-app/latest/help/data/geodatabases/manage-file-gdb/file-geodatabases.htm) into layers within a new [OGC GeoPackage](https://www.geopackage.org). This package is designed to be used from the command line or imported as a module.
 
 This package does not have a dependency on ArcPy, which means that you can safely extract feature classes locked inside an Esri File GeoDataBase without needing to worry about any ArcGIS licensing.
 
