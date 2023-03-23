@@ -1,7 +1,7 @@
 [project]
 name = "fgdb-to-gpkg"
 version = "0.1.0"
-description = "A lightweight Python package that converts FileGeoDataBases into GeoPackages"
+description = "A lightweight Python package that converts Esri File GeoDataBases into OGC GeoPackages"
 authors = [
     {name = "Philip Orlando", email = "phlp.orlando@gmail.com"},
     ]
