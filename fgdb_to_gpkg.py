@@ -20,8 +20,7 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True, **kwargs):
     :param **kwargs: additional keyword arguments to pass to geopandas.to_file()
     """
 
-    try: 
-
+    try:
         # Handle relative file paths
         fgdb_path = os.path.abspath(fgdb_path)
         gpkg_path = os.path.abspath(gpkg_path)
@@ -42,12 +41,18 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True, **kwargs):
 
         # Loop through each feature class
         for fc in fc_list:
-
             # Read the feature class into GeoDataFrame
             gdf = gpd.read_file(fgdb_path, layer=fc)
 
             # Write the GeoDataFrame to a GeoPackage
-            gdf.to_file(gpkg_path, driver="GPKG", layer=fc, index=False, if_exists="append", **kwargs)
+            gdf.to_file(
+                gpkg_path,
+                driver="GPKG",
+                layer=fc,
+                index=False,
+                if_exists="append",
+                **kwargs,
+            )
 
             # Update progress bar
             progress_bar.update(1)
@@ -58,12 +63,19 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True, **kwargs):
     except Exception as e:
         print(f"Error converting {fgdb_path} to {gpkg_path}: {e}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # Set up argparse to parse command line arguments
-    parser = argparse.ArgumentParser(description='Convert an Esri File GeoDatabase to a GeoPackage')
-    parser.add_argument('fgdb_path', type=str, help='path to the File GeoDatabase')
-    parser.add_argument('gpkg_path', type=str, help='path to the GeoPackage to create')
-    parser.add_argument('--overwrite', action='store_true', help='deletes an existing GeoPackage before copying layers from File GeoDataBase.')
+    parser = argparse.ArgumentParser(
+        description="Convert an Esri File GeoDatabase to a GeoPackage"
+    )
+    parser.add_argument("fgdb_path", type=str, help="path to the File GeoDatabase")
+    parser.add_argument("gpkg_path", type=str, help="path to the GeoPackage to create")
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="deletes an existing GeoPackage before copying layers from File GeoDataBase.",
+    )
 
     # Parse command line arguments
     args = parser.parse_args()
