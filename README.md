@@ -11,7 +11,7 @@ This package does not have a dependency on ArcPy, which means that you can safel
 3. Install the package and its dependencies with pipenv: `pipenv install`
 
 ```
-# TODO
+# TODO add alternative installation instructions using pip?
 pip install git+https://github.com/philiporlando/fgdb_to_gpkg
 ```
 
