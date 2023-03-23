@@ -1,3 +1,4 @@
+import argparse
 import geopandas as gpd
 import fiona
 
@@ -28,3 +29,17 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, quiet=True):
 
         # Write the GeoDataFrame to a GeoPackage
         gdf.to_file(gpkg_path, driver="GPKG", layer=fc, index=False, if_exists="append")
+
+
+if __name__ == '__main__':
+    # Set up argparse to parse command line arguments
+    parser = argparse.ArgumentParser(description='Convert a File GeoDatabase to a GeoPackage')
+    parser.add_argument('fgdb_path', type=str, help='path to the File GeoDatabase')
+    parser.add_argument('gpkg_path', type=str, help='path to the GeoPackage to create')
+    parser.add_argument('--quiet', action='store_true', help='suppress printing of feature class names')
+
+    # Parse command line arguments
+    args = parser.parse_args()
+
+    # Call the fgdb_to_gpkg function with the provided arguments
+    fgdb_to_gpkg(args.fgdb_path, args.gpkg_path, args.quiet)
