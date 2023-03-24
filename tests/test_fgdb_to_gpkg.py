@@ -12,7 +12,8 @@ def test_fgdb_to_gpkg():
 
         # Create a GeoDataFrame and save it to the File GeoDatabase
         gdf = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
-        gdf.to_file(fgdb_path, layer="test", driver="FileGDB")
+        # TODO fiona doesn't support writing to FileGDB...
+        gdf.to_file(fgdb_path, layer="test", driver="OpenFileGDB")
 
         # Convert the File GeoDatabase to a GeoPackage
         fgdb_to_gpkg(fgdb_path, gpkg_path)
