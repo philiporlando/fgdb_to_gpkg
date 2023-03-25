@@ -4,12 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+tqdm = "*"
 fiona = "*"
 geopandas = "*"
-tqdm = "*"
+shapely = "*"
 
 [dev-packages]
 pytest = "*"
+gdal = "==3.6.0"
 
 [requires]
 python_version = "3.10"
+
+[pipenv]
+allow_prereleases = true
