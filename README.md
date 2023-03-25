@@ -42,9 +42,9 @@ fgdb_to_gpkg(input_fgdb_path, output_gpkg_path)
 # See help(fgdb_to_gpkg) for more details
 ```
 
-### Testing
+## Testing
 
-Unit tests can be performed using the following command:
+Unit tests can be performed by the developers of this package using the following command:
 
 ```
 pipenv run pytest tests
