@@ -41,3 +41,11 @@ fgdb_to_gpkg(input_fgdb_path, output_gpkg_path)
 
 # See help(fgdb_to_gpkg) for more details
 ```
+
+### Testing
+
+Unit tests can be performed using the following command:
+
+```
+pipenv run pytest tests
+```
