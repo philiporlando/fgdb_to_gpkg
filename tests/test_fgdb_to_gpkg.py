@@ -12,16 +12,13 @@ def test_fgdb_to_gpkg():
     with tempfile.TemporaryDirectory() as temp_dir:
         fgdb_path = os.path.join(temp_dir, "test.gdb")
         gpkg_path = os.path.join(temp_dir, "test.gpkg")
-        layer = "layer"
+        layer = "test_fc"
 
         # Create a GeoDataFrame and save it to the File GeoDatabase
         gdf = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
 
         # Remove columns that cause test failure...
         gdf = gdf.drop(columns="gdp_md_est")
-
-        # Convert MultiPolygon to Polygon
-        # gdf = gdf.explode()
 
         # Convert Polygon to MultiPolygon
         gdf["geometry"] = [
