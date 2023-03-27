@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "066a94905913ea4f56d9fd2756c0b5083cacc8fc9d79c9fcaa09380194a030ff"
+            "sha256": "4f14f41a8e0441aff8f10674d0db8fc7bd7c8e79c784c3b77cd24b291e10d33f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -76,6 +76,13 @@
             ],
             "index": "pypi",
             "version": "==1.9.2"
+        },
+        "gdal": {
+            "hashes": [
+                "sha256:fee5209510013d56bbe2312f29615b156c9ea88f1ffbfbb089d490ca1c9a77a9"
+            ],
+            "index": "pypi",
+            "version": "==3.6.0"
         },
         "geopandas": {
             "hashes": [
@@ -290,13 +297,6 @@
             ],
             "markers": "python_version < '3.11'",
             "version": "==1.1.1"
-        },
-        "gdal": {
-            "hashes": [
-                "sha256:fee5209510013d56bbe2312f29615b156c9ea88f1ffbfbb089d490ca1c9a77a9"
-            ],
-            "index": "pypi",
-            "version": "==3.6.0"
         },
         "iniconfig": {
             "hashes": [
