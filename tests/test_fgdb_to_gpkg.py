@@ -16,7 +16,7 @@ def test_fgdb_to_gpkg():
         # Create a GeoDataFrame and save it to the File GeoDatabase
         gdf = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
 
-        # Promote Polygon to MultiPolygon to avoid fiona write error
+        # Promote Polygon to MultiPolygon to avoid fiona error with mixed geometries
         gdf["geometry"] = [
             MultiPolygon([feature]) if isinstance(feature, Polygon) else feature
             for feature in gdf["geometry"]
