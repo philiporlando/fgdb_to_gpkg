@@ -1,6 +1,5 @@
 import os
 import tempfile
-import pandas as pd
 import geopandas as gpd
 from shapely.geometry.polygon import Polygon
 from shapely.geometry.multipolygon import MultiPolygon
@@ -17,33 +16,23 @@ def test_fgdb_to_gpkg():
         # Create a GeoDataFrame and save it to the File GeoDatabase
         gdf = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
 
-        # Remove columns that cause test failure...
-        gdf = gdf.drop(columns="gdp_md_est")
-
-        # Convert Polygon to MultiPolygon
+        # Convert Polygon to MultiPolygon to avoid fiona write error
         gdf["geometry"] = [
             MultiPolygon([feature]) if isinstance(feature, Polygon) else feature
             for feature in gdf["geometry"]
         ]
 
+        # Write gdf to File GeoDataBase
         gdf.to_file(fgdb_path, layer=layer, driver="OpenFileGDB")
 
         # Convert the File GeoDatabase to a GeoPackage
         fgdb_to_gpkg(fgdb_path, gpkg_path)
 
-        # Load the GeoPackage into a GeoDataFrame
+        # Read the File GeoDatabase
+        gdf_fgdb = gpd.read_file(fgdb_path, layer=layer)
+
+        # Read the GeoPackage
         gdf_gpkg = gpd.read_file(gpkg_path, layer=layer)
 
-        print(gdf.compare(gdf_gpkg))
-
-        # Drop geometries when comparing attribute data
-        df = pd.DataFrame(gdf.drop(columns="geometry"))
-        df_gpkg = pd.DataFrame(gdf_gpkg.drop(columns="geometry"))
-
-        # Assert that the two DataFrames are equal
-        assert df_gpkg.equals(df)
-
-        # Assert that the two GeoDataFrames are equal
-        # TODO Geometries are being altered when writing to GPKG?
-        # assert gdf_gpkg.equals(gdf)
-        # gpd.testing.assert_geodataframe_equal(gdf, gdf_gpkg)
+        # Expect each gdf to be the same
+        assert gdf_fgdb.equals(gdf_gpkg)
