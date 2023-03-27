@@ -21,10 +21,6 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True, **kwargs):
     """
 
     try:
-        # Handle relative file paths
-        fgdb_path = os.path.abspath(fgdb_path)
-        gpkg_path = os.path.abspath(gpkg_path)
-
         # Ensure input File GeoDataBase exists
         if not os.path.exists(fgdb_path):
             raise ValueError(f"{fgdb_path} does not exist!")
