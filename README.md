@@ -9,7 +9,7 @@ This package does not have a dependency on ArcPy, which means that you can safel
 #### Installing from PyPI
 
 ```
-pip install fgdb_to_gpkg
+pip install fgdb-to-gpkg
 ```
 
 #### Installing the development version of this package
