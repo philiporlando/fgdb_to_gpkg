@@ -59,10 +59,8 @@ poetry run pytest tests
 # fiona.errors.DriverError: OpenFileGDB driver requires at least GDAL 3.6.0 for mode 'w', Fiona was compiled against: 3.5.3
 ```
 
-The `poetry.toml` file should contain all of the config needed to tell poetry to handle this issue. However, if `poetry install` does not resolve the issue, then try the following steps:
+The `poetry.toml` file should contain all of the config needed to tell poetry to handle this issue. However, if `poetry install` does not resolve the issue, then try the following:
 
 ```python
-poetry remove fiona
-poetry config --local installer.no-binary fiona
 poetry run pip install --force-reinstall fiona --no-binary fiona
 ```
