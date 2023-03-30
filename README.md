@@ -6,14 +6,17 @@ This package does not have a dependency on ArcPy, which means that you can safel
 
 ## Installation
 
+#### Installing from PyPI
+
+```
+pip install fgdb_to_gpkg
+```
+
+#### Installing the development version of this package
+
 1. Clone the repository: `git clone https://github.com/philiporlando/fgdb_to_gdb.git`
 2. Navigate to the repository directory: `cd fgdb_to_gdb`
 3. Install the package and its dependencies with poetry: `poetry install`
-
-```
-# TODO add alternative installation instructions using pip?
-pip install git+https://github.com/philiporlando/fgdb_to_gpkg
-```
 
 ## Usage
 
