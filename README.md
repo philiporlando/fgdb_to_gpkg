@@ -50,7 +50,7 @@ Unit tests can be performed by the developers of this package using the followin
 poetry run pytest tests
 ```
 
-### Handling the Fiona GDAL compilation error
+#### Handling the Fiona GDAL compilation error
 
 The unit tests within this package depend on `gdal=^3.6.0` but the current version of `fiona` ships with `gdal=3.5.3`. The fiona package must be installed using the `--no-binary` flag to test this package. If this is not configured properly, then you will see the following error:
 
