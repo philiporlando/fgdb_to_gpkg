@@ -8,7 +8,7 @@ This package does not have a dependency on ArcPy, which means that you can safel
 
 1. Clone the repository: `git clone https://github.com/philiporlando/fgdb_to_gdb.git`
 2. Navigate to the repository directory: `cd fgdb_to_gdb`
-3. Install the package and its dependencies with pipenv: `pipenv install`
+3. Install the package and its dependencies with poetry: `poetry install`
 
 ```
 # TODO add alternative installation instructions using pip?
@@ -22,7 +22,7 @@ pip install git+https://github.com/philiporlando/fgdb_to_gpkg
 To use `fgdb_to_gpkg` from the command line, simply call the `fgdb_to_gpkg` command with the path to the input File GeoDatabase and the path to the output GeoPackage:
 
 ```
-pipenv run python -m fgdb_to_gpkg <input_fgdb_path> <output_gpkg_path>
+poetry run python -m fgdb_to_gpkg <input_fgdb_path> <output_gpkg_path>
 ```
 
 ### Module Usage
@@ -47,5 +47,22 @@ fgdb_to_gpkg(input_fgdb_path, output_gpkg_path)
 Unit tests can be performed by the developers of this package using the following command:
 
 ```
-pipenv run pytest tests
+poetry run pytest tests
+```
+
+### Handling the Fiona GDAL compilation error
+
+The unit tests within this package depend on `gdal=^3.6.0` but the current version of `fiona` ships with `gdal=3.5.3`. The fiona package must be installed using the `--no-binary` flag to test this package. If this is not configured properly, then you will see the following error:
+
+```python
+poetry run pytest tests
+# fiona.errors.DriverError: OpenFileGDB driver requires at least GDAL 3.6.0 for mode 'w', Fiona was compiled against: 3.5.3
+```
+
+The `poetry.toml` file should contain all of the config needed to tell poetry to handle this issue. However, if `poetry install` does not resolve the issue, then try the following steps:
+
+```python
+poetry remove fiona
+poetry config --local installer.no-binary fiona
+poetry run pip install --force-reinstall fiona --no-binary fiona
 ```

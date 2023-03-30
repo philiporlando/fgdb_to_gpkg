@@ -1,2 +1,2 @@
 [installer]
-no-binary = ["gdal", "fiona"]
+no-binary = ["fiona"]
