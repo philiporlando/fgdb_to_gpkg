@@ -15,7 +15,6 @@ version = "0.1.0"
 description = "A lightweight Python package that converts Esri File GeoDataBases into OGC GeoPackages"
 authors = ["Philip Orlando <phlp.orlando@gmail.com>"]
 readme = "README.md"
-packages = [{include = "fgdb_to_gpkg"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
