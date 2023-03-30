@@ -11,7 +11,7 @@ fiona = "1.9.2"
 geopandas = "0.12.2"
 [tool.poetry]
 name = "fgdb-to-gpkg"
-version = "0.1.0"
+version = "0.1.1"
 description = "A lightweight Python package that converts Esri File GeoDataBases into OGC GeoPackages"
 authors = ["Philip Orlando <phlp.orlando@gmail.com>"]
 readme = "README.md"
