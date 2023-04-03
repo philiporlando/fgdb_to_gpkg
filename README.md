@@ -16,7 +16,7 @@ pip install fgdb-to-gpkg
 
 1. Clone the repository: `git clone https://github.com/philiporlando/fgdb_to_gdb.git`
 2. Navigate to the repository directory: `cd fgdb_to_gdb`
-3. Install the package and its dependencies with poetry: `poetry install`
+3. Install the package and its dependencies with [poetry](https://python-poetry.org/): `poetry install`
 
 ## Usage
 
