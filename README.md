@@ -67,3 +67,11 @@ The `poetry.toml` file should contain all of the config needed to tell poetry ho
 ```python
 poetry run pip install --force-reinstall fiona --no-binary fiona
 ```
+
+## Publishing
+
+This package is automatically published to PyPI when a new release is crafted. For a successful publication, maintainers should:
+
+1. Increment the version number in the pyproject.toml file. Ensure you update it in both the [project] and [project.dependencies] sections.
+
+2. Adhere to `vX.X.X` the naming convention for the release name and tag.
