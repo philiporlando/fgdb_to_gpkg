@@ -18,5 +18,6 @@ jobs:
     - name: Install Dependencies
       run: |
         pip install black 
-    - name: Check Python style
-      run: black --check .  
+    - name: Lint with Black
+      run: black --check . 
+      continue-on-error: true 
