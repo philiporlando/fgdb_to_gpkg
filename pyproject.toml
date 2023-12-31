@@ -18,12 +18,12 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-geopandas = "^0.12.2"
+geopandas = "0.12.2"
 shapely = "^2.0.1"
 tqdm = "^4.65.0"
 argparse = "^1.4.0"
-fiona = "^1.9.2"
-gdal = "^3.6.3"
+fiona = "1.9.2"
+gdal = "3.6.3"
 numpy = "1.23.2"
 
 [tool.poetry.group.dev.dependencies]
