@@ -11,7 +11,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  poetry-run-pytest:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false # This ensures all matrix jobs run even if some fail
