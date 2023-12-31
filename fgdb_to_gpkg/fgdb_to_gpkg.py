@@ -23,7 +23,7 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True, **kwargs):
     try:
         # Ensure input File GeoDataBase exists
         if not os.path.exists(fgdb_path):
-            raise ValueError(f"{fgdb_path} does not exist!")
+            raise FileNotFoundError(f"{fgdb_path} does not exist!")
 
         # Remove existing GeoPackage if overwrite is True
         if os.path.exists(gpkg_path) and overwrite:
@@ -37,6 +37,13 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True, **kwargs):
 
         # Loop through each feature class
         for fc in fc_list:
+            # Check if layer exists in GeoPackage when not overwriting
+            if not overwrite and os.path.exists(gpkg_path):
+                with fiona.open(gpkg_path, "r") as gpkg:
+                    if fc in gpkg:
+                        print(f"Layer {fc} already exists in {gpkg_path}. Skipping...")
+                        continue
+
             # Read the feature class into GeoDataFrame
             gdf = gpd.read_file(fgdb_path, layer=fc)
 
