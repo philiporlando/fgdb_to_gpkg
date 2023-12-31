@@ -3,7 +3,6 @@
 # `branches: [main], then this actions runs _twice_ on pull requests, which is
 # annoying.
 
-# Name of the workflow
 name: Python Unit Tests with Poetry
 
 on:
@@ -14,18 +13,21 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12'] # Adjust these as per available versions
 
     # Use Docker container to handle the GDAL dependencies
     container:
       image: osgeo/gdal:ubuntu-small-3.6.3
-      
+
     steps:
       - uses: actions/checkout@v2
 
-      # Setup Python version specified
+      # Setup Python version specified in matrix
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: ${{ matrix.python-version }}
 
       # Install essential build tools required for compiling Python packages
       - name: Install build tools
@@ -38,7 +40,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.local
-          key: poetry-1.6.1-0
+          key: poetry-1.6.1-${{ matrix.python-version }}
 
       # Install Poetry using snok/install-poetry action
       - uses: snok/install-poetry@v1
@@ -57,7 +59,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./.venv
-          key: ${{ runner.os }}-venv-${{ hashFiles('**/poetry.lock') }}
+          key: ${{ runner.os }}-venv-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
 
       # Install dependencies with Poetry, avoiding caching of the project itself
       - run: poetry install --no-interaction --no-root
