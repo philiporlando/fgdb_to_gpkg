@@ -15,9 +15,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # Use Docker container
+    # Use Docker container to handle the GDAL dependencies
     container:
-      image: osgeo/gdal:ubuntu-small-latest
+      image: osgeo/gdal:ubuntu-small-3.6.3
       
     steps:
       - uses: actions/checkout@v2
@@ -26,15 +26,6 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.10'
-
-      # Install specific version of GDAL
-      - name: Install GDAL 3.6.0
-        run: |
-          apt-get update
-          apt-get install -y software-properties-common
-          add-apt-repository ppa:ubuntugis/ppa
-          apt-get update
-          apt-get install -y gdal-bin=3.6.0-0~focal0 libgdal-dev=3.6.0-0~focal0
 
       # Cache the installation of Poetry
       - name: cache poetry install
@@ -50,6 +41,10 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
+      # Configure Poetry: virtualenvs will be created in the project's folder
+      - name: Configure Poetry
+        run: poetry config virtualenvs.in-project true
+
       # Cache your project dependencies
       - name: cache deps
         id: cache-deps
@@ -58,11 +53,12 @@ jobs:
           path: ./.venv
           key: ${{ runner.os }}-venv-${{ hashFiles('**/poetry.lock') }}
 
-      # Install dependencies with Poetry
+      # Install dependencies with Poetry, avoiding caching of the project itself
       - run: poetry install --no-interaction --no-root
         if: steps.cache-deps.outputs.cache-hit != 'true'
 
+      # Install the project using Poetry to fully-exercise pyproject.toml
       - run: poetry install --no-interaction
 
-      # Run tests with pytest
+      # Run tests with pytest as configured in pyproject.toml
       - run: poetry run pytest
