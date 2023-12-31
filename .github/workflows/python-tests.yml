@@ -27,6 +27,10 @@ jobs:
         with:
           python-version: '3.10'
 
+      # Install build-essential tools for compiling C extensions
+      - name: Install build tools
+        run: apt-get update && apt-get install -y build-essential
+
       # Cache the installation of Poetry
       - name: cache poetry install
         uses: actions/cache@v2
@@ -41,8 +45,7 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      # Cache your project dependencies. This caches the virtual environment
-      # to speed up builds by caching the dependencies
+      # Cache your project dependencies
       - name: cache deps
         id: cache-deps
         uses: actions/cache@v2
@@ -51,15 +54,11 @@ jobs:
           key: ${{ runner.os }}-venv-${{ hashFiles('**/poetry.lock') }}
 
       # Install dependencies with Poetry, avoiding caching of the project itself
-      # The `if` statement ensures this only runs on a cache miss
       - run: poetry install --no-interaction --no-root
         if: steps.cache-deps.outputs.cache-hit != 'true'
 
       # Install the project using Poetry to fully-exercise pyproject.toml
-      # This is necessary for projects that need to be installed, such as
-      # Python packages
       - run: poetry install --no-interaction
 
       # Run tests with pytest as configured in pyproject.toml
-      # This assumes that your pytest configuration is located in pyproject.toml
       - run: poetry run pytest
