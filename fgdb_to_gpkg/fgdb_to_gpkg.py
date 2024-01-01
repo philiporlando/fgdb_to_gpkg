@@ -2,10 +2,11 @@ import argparse
 import geopandas as gpd
 import fiona
 import os
+import warnings
 from tqdm import tqdm
 
 
-def fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True, **kwargs):
+def fgdb_to_gpkg(fgdb_path: str, gpkg_path: str, overwrite: bool = True, **kwargs):
     """Converts all feature classes within a File GeoDataBase to new layers within a GeoPackage.
 
     :param fgdb_path: file path of an Esri File GeoDataBase (.gdb)
@@ -39,9 +40,13 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True, **kwargs):
         for fc in fc_list:
             # Check if layer exists in GeoPackage when not overwriting
             if not overwrite and os.path.exists(gpkg_path):
+                layer_list = fiona.listlayers(gpkg_path)
                 with fiona.open(gpkg_path, "r") as gpkg:
-                    if fc in gpkg:
-                        print(f"Layer {fc} already exists in {gpkg_path}. Skipping...")
+                    if fc in layer_list:
+                        warnings.warn(
+                            f"Layer {fc} already exists in {gpkg_path}. Skipping...",
+                            UserWarning,
+                        )
                         continue
 
             # Read the feature class into GeoDataFrame
