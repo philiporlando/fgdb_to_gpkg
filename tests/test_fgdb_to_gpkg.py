@@ -2,6 +2,7 @@ import pytest
 import tempfile
 import os
 import geopandas as gpd
+import warnings
 from typing import Literal
 from shapely.geometry.polygon import Polygon
 from shapely.geometry.multipolygon import MultiPolygon
@@ -9,12 +10,13 @@ from fgdb_to_gpkg import fgdb_to_gpkg
 
 
 @pytest.fixture
-def setup_fgdb_gpkg():
+def setup_fgdb_gpkg() -> tuple[str, str, list[str]]:
     # Setup fixture for creating a temporary File GeoDatabase and GeoPackage
     with tempfile.TemporaryDirectory() as temp_dir:
         fgdb_path = os.path.join(temp_dir, "test.gdb")
         gpkg_path = os.path.join(temp_dir, "test.gpkg")
-        layer = "test_fc"
+        layer = "layer1"
+        layers = [layer, "layer2", "layer3"]
 
         # Create a GeoDataFrame
         gdf = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
@@ -23,8 +25,10 @@ def setup_fgdb_gpkg():
             for feature in gdf["geometry"]
         ]
 
-        # Write the GeoDataFrame to File GeoDatabase
-        gdf.to_file(fgdb_path, layer=layer, driver="OpenFileGDB")
+        # Write the GeoDataFrame to layers within File GeoDatabase
+        for layer in layers:
+            gdf["layer_name"] = layer
+            gdf.to_file(fgdb_path, layer=layer, driver="OpenFileGDB")
 
         yield fgdb_path, gpkg_path, layer
 
@@ -72,3 +76,18 @@ def test_nonexistent_fgdb(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
     nonexistent_fgdb_path = "nonexistent.fgdb"
     with pytest.raises(FileNotFoundError):
         fgdb_to_gpkg(nonexistent_fgdb_path, gpkg_path, overwrite=False)
+
+
+def test_layer_already_exists(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
+    # Test the behavior when a layer already exists and overwrite is False
+    fgdb_path, gpkg_path, _ = setup_fgdb_gpkg
+
+    warnings.simplefilter("always")
+
+    # First conversion to create the layer
+    fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True)
+
+    # Try converting again with overwrite=False
+    # This should raise a warning because the layers already exists
+    with pytest.warns(UserWarning) as record:
+        fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=False)
