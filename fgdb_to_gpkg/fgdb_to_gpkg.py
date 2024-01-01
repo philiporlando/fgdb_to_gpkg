@@ -119,6 +119,7 @@ def fgdb_to_gpkg(
 
     except Exception as e:
         print(f"Error converting {fgdb_path} to {gpkg_path}: {e}")
+        raise
 
 
 if __name__ == "__main__":
