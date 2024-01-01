@@ -80,7 +80,7 @@ def test_nonexistent_fgdb(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
 
 def test_layer_already_exists(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
     # Test the behavior when the layer already exists and overwrite is False
-    fgdb_path, gpkg_path, layer = setup_fgdb_gpkg
+    fgdb_path, gpkg_path, _ = setup_fgdb_gpkg
 
     warnings.simplefilter("always")
 
@@ -88,6 +88,6 @@ def test_layer_already_exists(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"
     fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True)
 
     # Try converting again with overwrite=False
-    # This should raise a warning because the layer already exists
+    # This should raise a warning because the layers already exists
     with pytest.warns(UserWarning) as record:
         fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=False)
