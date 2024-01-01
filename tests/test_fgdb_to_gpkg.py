@@ -79,7 +79,7 @@ def test_nonexistent_fgdb(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
 
 
 def test_layer_already_exists(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
-    # Test the behavior when the layer already exists and overwrite is False
+    # Test the behavior when a layer already exists and overwrite is False
     fgdb_path, gpkg_path, _ = setup_fgdb_gpkg
 
     warnings.simplefilter("always")
