@@ -2,6 +2,7 @@ import pytest
 import tempfile
 import os
 import geopandas as gpd
+from typing import Literal
 from shapely.geometry.polygon import Polygon
 from shapely.geometry.multipolygon import MultiPolygon
 from fgdb_to_gpkg import fgdb_to_gpkg
@@ -28,7 +29,7 @@ def setup_fgdb_gpkg():
         yield fgdb_path, gpkg_path, layer
 
 
-def test_fgdb_to_gpkg(setup_fgdb_gpkg):
+def test_fgdb_to_gpkg(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
     # Test basic functionality of fgdb_to_gpkg
     fgdb_path, gpkg_path, layer = setup_fgdb_gpkg
 
@@ -40,7 +41,7 @@ def test_fgdb_to_gpkg(setup_fgdb_gpkg):
     assert gdf_fgdb.equals(gdf_gpkg)
 
 
-def test_fgdb_to_gpkg_overwrite(setup_fgdb_gpkg):
+def test_fgdb_to_gpkg_overwrite(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
     # Test the overwrite functionality of fgdb_to_gpkg
     fgdb_path, gpkg_path, layer = setup_fgdb_gpkg
 
@@ -63,3 +64,13 @@ def test_fgdb_to_gpkg_overwrite(setup_fgdb_gpkg):
     fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True)
     gdf_gpkg_overwrite = gpd.read_file(gpkg_path, layer=layer)
     assert "new_column" in gdf_gpkg_overwrite.columns
+
+
+def test_nonexistent_fgdb(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
+    # Test that a file not found error is raised when a nonexistent fgdb is used
+    _, gpkg_path, _ = setup_fgdb_gpkg
+    nonexistent_fgdb_path = "nonexistent.fgdb"
+    with pytest.raises(FileNotFoundError) as exc_info:
+        fgdb_to_gpkg(nonexistent_fgdb_path, gpkg_path, overwrite=False)
+    # expected_error_message = f"Error converting {nonexistent_fgdb_path} to {gpkg_path}: {nonexistent_fgdb_path} does not exist!"
+    # assert str(exc_info.value) == expected_error_message

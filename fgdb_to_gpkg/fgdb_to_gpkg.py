@@ -20,11 +20,11 @@ def fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True, **kwargs):
     :param **kwargs: additional keyword arguments to pass to geopandas.to_file()
     """
 
-    try:
-        # Ensure input File GeoDataBase exists
-        if not os.path.exists(fgdb_path):
-            raise FileNotFoundError(f"{fgdb_path} does not exist!")
+    # Ensure input File GeoDataBase exists
+    if not os.path.exists(fgdb_path):
+        raise FileNotFoundError(f"{fgdb_path} does not exist!")
 
+    try:
         # Remove existing GeoPackage if overwrite is True
         if os.path.exists(gpkg_path) and overwrite:
             os.remove(gpkg_path)
