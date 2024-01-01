@@ -36,18 +36,21 @@ def fgdb_to_gpkg(fgdb_path: str, gpkg_path: str, overwrite: bool = True, **kwarg
         # Create progress bar
         progress_bar = tqdm(total=len(fc_list), desc="Converting layers")
 
+        # List all layers within GeoPackage if it exists
+        gpkg_exists = os.path.exists(gpkg_path)
+        if gpkg_exists:
+            layer_list = fiona.listlayers(gpkg_path)
+
         # Loop through each feature class
         for fc in fc_list:
-            # Check if layer exists in GeoPackage when not overwriting
-            if not overwrite and os.path.exists(gpkg_path):
-                layer_list = fiona.listlayers(gpkg_path)
-                with fiona.open(gpkg_path, "r") as gpkg:
-                    if fc in layer_list:
-                        warnings.warn(
-                            f"Layer {fc} already exists in {gpkg_path}. Skipping...",
-                            UserWarning,
-                        )
-                        continue
+            # Skip writing layer if it already exists in GeoPackage when not overwriting
+            if not overwrite and gpkg_exists:
+                if fc in layer_list:
+                    warnings.warn(
+                        f"Layer {fc} already exists in {gpkg_path}. Skipping...",
+                        UserWarning,
+                    )
+                    continue
 
             # Read the feature class into GeoDataFrame
             gdf = gpd.read_file(fgdb_path, layer=fc)
