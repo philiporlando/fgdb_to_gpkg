@@ -70,7 +70,5 @@ def test_nonexistent_fgdb(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
     # Test that a file not found error is raised when a nonexistent fgdb is used
     _, gpkg_path, _ = setup_fgdb_gpkg
     nonexistent_fgdb_path = "nonexistent.fgdb"
-    with pytest.raises(FileNotFoundError) as exc_info:
+    with pytest.raises(FileNotFoundError):
         fgdb_to_gpkg(nonexistent_fgdb_path, gpkg_path, overwrite=False)
-    # expected_error_message = f"Error converting {nonexistent_fgdb_path} to {gpkg_path}: {nonexistent_fgdb_path} does not exist!"
-    # assert str(exc_info.value) == expected_error_message
