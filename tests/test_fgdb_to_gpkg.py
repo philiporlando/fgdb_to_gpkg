@@ -120,3 +120,9 @@ def test_layer_already_exists(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"
     # This should raise a warning because the layers already exists
     with pytest.warns(UserWarning) as record:
         fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=False)
+
+
+def test_fgdb_to_gpkg_missing_inputs():
+    # Test that a type error is raised when no positional arguments are passed
+    with pytest.raises(TypeError):
+        fgdb_to_gpkg()
