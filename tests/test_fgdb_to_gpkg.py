@@ -6,9 +6,15 @@ import warnings
 from typing import Literal
 from shapely.geometry.polygon import Polygon
 from shapely.geometry.multipolygon import MultiPolygon
-from fgdb_to_gpkg import fgdb_to_gpkg
+from fgdb_to_gpkg import (
+    remove_gpkg_if_overwrite,
+    get_layer_lists,
+    convert_layer,
+    fgdb_to_gpkg,
+)
 
 
+# Setup fixture
 @pytest.fixture
 def setup_fgdb_gpkg() -> tuple[str, str, list[str]]:
     # Setup fixture for creating a temporary File GeoDatabase and GeoPackage
@@ -31,6 +37,29 @@ def setup_fgdb_gpkg() -> tuple[str, str, list[str]]:
             gdf.to_file(fgdb_path, layer=layer, driver="OpenFileGDB")
 
         yield fgdb_path, gpkg_path, layer
+
+
+def test_remove_gpkg_if_overwrite(setup_fgdb_gpkg: tuple[str, str, list[str]]):
+    _, gpkg_path, _ = setup_fgdb_gpkg
+    # Create a dummy file to simulate an existing GeoPackage
+    with open(gpkg_path, "w") as f:
+        f.write("dummy content")
+    remove_gpkg_if_overwrite(gpkg_path, True)
+    assert not os.path.exists(gpkg_path), "GeoPackage was removed as expected."
+
+
+# Test for get_layer_lists function
+def test_get_layer_lists(setup_fgdb_gpkg: tuple[str, str, list[str]]):
+    fgdb_path, gpkg_path, _ = setup_fgdb_gpkg
+    fc_list, layer_list = get_layer_lists(fgdb_path, gpkg_path, False)
+    # Check the returned lists as per your expectations
+
+
+# Test for convert_layer function
+def test_convert_layer(setup_fgdb_gpkg: tuple[str, str, list[str]]):
+    fgdb_path, gpkg_path, layer = setup_fgdb_gpkg
+    convert_layer(layer, fgdb_path, gpkg_path, False, [])
+    # Read and check if the layer was added to the GeoPackage
 
 
 def test_fgdb_to_gpkg(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
