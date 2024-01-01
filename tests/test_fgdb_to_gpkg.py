@@ -10,7 +10,7 @@ from fgdb_to_gpkg import fgdb_to_gpkg
 
 
 @pytest.fixture
-def setup_fgdb_gpkg():
+def setup_fgdb_gpkg() -> tuple[str, str, list[str]]:
     # Setup fixture for creating a temporary File GeoDatabase and GeoPackage
     with tempfile.TemporaryDirectory() as temp_dir:
         fgdb_path = os.path.join(temp_dir, "test.gdb")

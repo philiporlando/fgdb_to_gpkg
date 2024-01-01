@@ -6,7 +6,9 @@ import warnings
 from tqdm import tqdm
 
 
-def fgdb_to_gpkg(fgdb_path: str, gpkg_path: str, overwrite: bool = True, **kwargs):
+def fgdb_to_gpkg(
+    fgdb_path: str, gpkg_path: str, overwrite: bool = True, **kwargs
+) -> None:
     """Converts all feature classes within a File GeoDataBase to new layers within a GeoPackage.
 
     :param fgdb_path: file path of an Esri File GeoDataBase (.gdb)
