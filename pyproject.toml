@@ -7,7 +7,7 @@ authors = [
     ]
 
 [project.dependencies]
-fiona = "1.9.2"
+fiona = "1.10.b2"
 geopandas = "0.12.2"
 [tool.poetry]
 name = "fgdb-to-gpkg"
