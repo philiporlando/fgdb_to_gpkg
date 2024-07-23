@@ -83,9 +83,7 @@ def convert_layer(
         return
 
     gdf = gpd.read_file(fgdb_path, layer=fc)
-    gdf.to_file(
-        gpkg_path, driver="GPKG", layer=fc, index=False, if_exists="append", **kwargs
-    )
+    gdf.to_file(gpkg_path, driver="GPKG", layer=fc, index=False, mode="a", **kwargs)
 
 
 def fgdb_to_gpkg(

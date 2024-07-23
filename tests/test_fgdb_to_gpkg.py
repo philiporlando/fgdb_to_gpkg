@@ -1,3 +1,5 @@
+import zipfile
+import geodatasets
 import pytest
 import tempfile
 import os
@@ -14,9 +16,20 @@ from fgdb_to_gpkg import (
 )
 
 
+# Function to get and extract the naturalearth land dataset from geodatasets
+@pytest.fixture
+def naturalearth_land() -> gpd.GeoDataFrame:
+    dataset_path = geodatasets.get_path("naturalearth land")
+    with tempfile.TemporaryDirectory() as temp_dir:
+        with zipfile.ZipFile(dataset_path, "r") as zfile:
+            zfile.extractall(temp_dir)
+        shapefile_path = os.path.join(temp_dir, "ne_110m_land.shp")
+        return gpd.read_file(shapefile_path)
+
+
 # Setup fixture
 @pytest.fixture
-def setup_fgdb_gpkg() -> tuple[str, str, list[str]]:
+def setup_fgdb_gpkg(naturalearth_land) -> tuple[str, str, list[str]]:
     # Setup fixture for creating a temporary File GeoDatabase and GeoPackage
     with tempfile.TemporaryDirectory() as temp_dir:
         fgdb_path = os.path.join(temp_dir, "test.gdb")
@@ -25,7 +38,7 @@ def setup_fgdb_gpkg() -> tuple[str, str, list[str]]:
         layers = [layer, "layer2", "layer3"]
 
         # Create a GeoDataFrame
-        gdf = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
+        gdf = naturalearth_land
         gdf["geometry"] = [
             MultiPolygon([feature]) if isinstance(feature, Polygon) else feature
             for feature in gdf["geometry"]
