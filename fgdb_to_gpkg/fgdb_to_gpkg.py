@@ -5,6 +5,8 @@ from typing import List, Tuple
 
 import fiona
 import geopandas as gpd
+import pandas
+import pyogrio
 from tqdm import tqdm
 
 
@@ -75,7 +77,8 @@ def convert_layer(
     :param layer_list: list of existing layers in the GeoPackage
     :type layer_list: List[str]
 
-    :param kwargs: additional keyword arguments for geopandas.to_file()
+    :param kwargs: additional keyword arguments for geopandas.to_file(). Note that these
+        are not applied to attribute layers.
     """
     if not overwrite and fc in layer_list:
         warnings.warn(
@@ -84,7 +87,11 @@ def convert_layer(
         return
 
     gdf = gpd.read_file(fgdb_path, layer=fc)
-    gdf.to_file(gpkg_path, driver="GPKG", layer=fc, index=False, mode="a", **kwargs)
+    if isinstance(gdf, pandas.DataFrame):
+        # Handle attribute layer
+        pyogrio.write_dataframe(gdf, gpkg_path, layer=fc, driver="GPKG", append=True)
+    else:
+        gdf.to_file(gpkg_path, driver="GPKG", layer=fc, index=False, mode="a", **kwargs)
 
 
 def fgdb_to_gpkg(
