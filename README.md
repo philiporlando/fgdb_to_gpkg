@@ -9,6 +9,14 @@ This package does not have a dependency on ArcPy, which means that you can safel
 #### Installing from PyPI
 
 ```
+# Recommended: Install globally using pipx
+pipx install fgdb-to-gpkg
+
+# Or install to a manually-created virtual environment
+python -m venv env
+./env/bin/pip install fgdb-to-gpkg
+
+# Or install to the global Python environment
 pip install fgdb-to-gpkg
 ```
 
@@ -17,15 +25,16 @@ pip install fgdb-to-gpkg
 1. Clone the repository: `git clone https://github.com/philiporlando/fgdb_to_gdb.git`
 2. Navigate to the repository directory: `cd fgdb_to_gdb`
 3. Install the package and its dependencies with [poetry](https://python-poetry.org/): `poetry install`
+4. Optionally, install the package to be run globally with pipx: `pipx install --editable .`
 
 ## Usage
 
 ### Command Line Usage
 
-To use `fgdb_to_gpkg` from the command line, simply call the `fgdb_to_gpkg` command with the path to the input File GeoDatabase and the path to the output GeoPackage:
+To use from the command line, simply call the `fgdb-to-gpkg` command with the path to the input File GeoDatabase and the path to the output GeoPackage:
 
 ```
-poetry run python -m fgdb_to_gpkg <input_fgdb_path> <output_gpkg_path>
+fgdb-to-gpkg <input_fgdb_path> <output_gpkg_path>
 ```
 
 ### Module Usage
