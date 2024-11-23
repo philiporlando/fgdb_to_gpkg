@@ -37,6 +37,12 @@ To use from the command line, simply call the `fgdb-to-gpkg` command with the pa
 fgdb-to-gpkg <input_fgdb_path> <output_gpkg_path>
 ```
 
+See the help menu for more details:
+
+```
+fgdb-to-gpkg --help
+```
+
 ### Module Usage
 
 You can also import `fgdb_to_gpkg` as a module in Python and use it to convert any Esri File GeoDatabase feature classes to GeoPackage layers programmatically.
@@ -50,8 +56,12 @@ input_fgdb_path = "/path/to/my_fgdb.gdb"
 output_gpkg_path = "/path/to/my_gpkg.gpkg"
 
 fgdb_to_gpkg(input_fgdb_path, output_gpkg_path)
+```
 
-# See help(fgdb_to_gpkg) for more details
+See the help menu for more details:
+
+```python
+help(fgdb_to_gpkg)
 ```
 
 ## Testing
