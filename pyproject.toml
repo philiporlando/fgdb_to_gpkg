@@ -3,8 +3,9 @@ name = "fgdb-to-gpkg"
 version = "0.2.2"
 description = "A lightweight Python package that converts Esri File GeoDataBases into OGC GeoPackages"
 authors = [
-    {name = "Philip Orlando", email = "phlp.orlando@gmail.com"},
-    ]
+    { name = "Philip Orlando", email = "phlp.orlando@gmail.com" },
+    { name = "Brandon Istenes", email = "bistenes@gmail.com" },
+]
 homepage = "https://github.com/philiporlando/fgdb_to_gpkg"
 repository = "https://github.com/philiporlando/fgdb_to_gpkg"
 
@@ -15,7 +16,10 @@ geopandas = "0.12.2"
 name = "fgdb-to-gpkg"
 version = "0.2.2"
 description = "A lightweight Python package that converts Esri File GeoDataBases into OGC GeoPackages"
-authors = ["Philip Orlando <phlp.orlando@gmail.com>"]
+authors = [
+    "Philip Orlando <phlp.orlando@gmail.com>",
+    "Brandon Istenes <bistenes@gmail.com>",
+]
 readme = "README.md"
 
 [tool.poetry.dependencies]
