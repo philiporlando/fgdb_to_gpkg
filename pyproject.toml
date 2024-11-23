@@ -5,6 +5,8 @@ description = "A lightweight Python package that converts Esri File GeoDataBases
 authors = [
     {name = "Philip Orlando", email = "phlp.orlando@gmail.com"},
     ]
+homepage = "https://github.com/philiporlando/fgdb_to_gpkg"
+repository = "https://github.com/philiporlando/fgdb_to_gpkg"
 
 [project.dependencies]
 fiona = "1.10.b2"
