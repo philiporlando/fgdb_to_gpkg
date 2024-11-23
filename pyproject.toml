@@ -38,3 +38,6 @@ geodatasets = "^2024.7.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+fgdb-to-gpkg = "fgdb_to_gpkg:main"

@@ -3,6 +3,7 @@ from .fgdb_to_gpkg import (
     fgdb_to_gpkg,
     get_layer_lists,
     remove_gpkg_if_overwrite,
+    main,
 )
 
 __all__ = [
@@ -10,4 +11,5 @@ __all__ = [
     "get_layer_lists",
     "convert_layer",
     "fgdb_to_gpkg",
+    "main",
 ]

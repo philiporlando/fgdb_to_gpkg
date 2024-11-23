@@ -121,7 +121,7 @@ def fgdb_to_gpkg(
         raise
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Convert an Esri File GeoDatabase to a GeoPackage"
     )
@@ -135,3 +135,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     fgdb_to_gpkg(args.fgdb_path, args.gpkg_path, args.overwrite)
+
+
+if __name__ == "__main__":
+    main()
