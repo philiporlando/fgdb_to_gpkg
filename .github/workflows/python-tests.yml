@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false # This ensures all matrix jobs run even if some fail
       matrix:
-        python-version: ['3.10', '3.11', '3.12'] # Adjust these as per available versions
+        python-version: ['3.10', '3.11', '3.12', '3.12'] # Adjust these as per available versions
 
     # Use Docker container to handle the GDAL dependencies
     container:
