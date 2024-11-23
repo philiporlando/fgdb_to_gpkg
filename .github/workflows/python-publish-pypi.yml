@@ -12,30 +12,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.x'
-        
-    - name: Install Poetry
-      uses: abatilo/actions-poetry@v2
-      with:
-        poetry-version: 1.8.4
+      # Use the custom action to set up the Python environment
+      - name: Setup Python Environment
+        uses: ./.github/actions/setup-python-environment
+        with:
+          python-version: '3.12'
+          poetry-version: '1.8.4'
 
-    - name: Configure Poetry
-      run: |
-        poetry config virtualenvs.create false
+      # Install only main dependencies
+      - name: Install Dependencies
+        run: poetry install --only main
 
-    - name: Install dependencies
-      run: poetry install --only main
+      # Run tests to verify the package
+      - name: Run Tests
+        run: poetry run pytest tests
 
-    - name: Run Tests
-      run: poetry run pytest tests
-    
-    - name: Publish to PyPI
-      env:
-        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
-      run: poetry publish --build
+      # Publish to PyPI
+      - name: Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: poetry publish --build
