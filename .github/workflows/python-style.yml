@@ -11,13 +11,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      
+      # Debug: List files to verify action exists
+      - name: Debug File Structure
+        run: |
+          ls -R .github/actions
 
       # Use the custom action to set up the Python environment
       - name: Setup Python Environment
         uses: ./.github/actions/setup-python-environment
         with:
           python-version: ${{ matrix.python-version }}
-          poetry-version: '1.6.1'
+          poetry-version: '1.8.4'
 
       # Cache style dependencies (e.g., Black)
       - name: Cache Black Installation
