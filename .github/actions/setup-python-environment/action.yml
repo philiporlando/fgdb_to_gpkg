@@ -4,17 +4,19 @@ description: Sets up a Python environment with Poetry and GDAL dependencies.
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v3
       with:
         python-version: ${{ inputs.python-version }}
+        cache: 'poetry'
 
     - name: Install build tools
       run: |
-        apt-get update
+        apt-get update 
         apt-get install -y \
           build-essential \
           libgeos-dev \
           libproj-dev
+      shell: bash
 
     - uses: snok/install-poetry@v1
       with:
@@ -22,6 +24,7 @@ runs:
 
     - name: Configure Poetry
       run: poetry config virtualenvs.in-project true
+      shell: bash
 
 inputs:
   python-version:
