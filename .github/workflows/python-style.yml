@@ -10,14 +10,34 @@ jobs:
         python-version: ['3.10', '3.11', '3.12', '3.13']
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        pip install black 
-    - name: Lint with Black
-      run: black --check . 
-      continue-on-error: true 
+      - uses: actions/checkout@v2
+      
+      # Debug: List files to verify action exists
+      - name: Debug File Structure
+        run: |
+          ls -R .github/actions
+
+      # Use the custom action to set up the Python environment
+      - name: Setup Python Environment
+        uses: ./.github/actions/setup-python-environment
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: '1.8.4'
+
+      # Cache style dependencies (e.g., Black)
+      - name: Cache Black Installation
+        id: cache-black
+        uses: actions/cache@v2
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-black-${{ matrix.python-version }}
+
+      # Install Black if it's not already cached
+      - name: Install Style Checker
+        run: poetry add --dev black
+        if: steps.cache-black.outputs.cache-hit != 'true'
+
+      # Lint with Black
+      - name: Lint with Black
+        run: poetry run black --check .
+        continue-on-error: true

@@ -1,0 +1,39 @@
+name: Setup Python Environment
+description: Sets up a Python environment with Poetry and GDAL dependencies.
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v3
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: 'poetry'
+
+    - name: Install build tools
+      run: |
+        apt-get update 
+        apt-get install -y \
+          build-essential \
+          libgeos-dev \
+          libproj-dev
+      shell: bash
+
+    - uses: snok/install-poetry@v1
+      with:
+        version: ${{ inputs.poetry-version }}
+
+    - name: Add Poetry to PATH
+      run: echo "export PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Configure Poetry
+      run: poetry config virtualenvs.in-project true
+      shell: bash
+
+inputs:
+  python-version:
+    required: true
+    description: The Python version to use.
+  poetry-version:
+    required: true
+    description: The Poetry version to install.

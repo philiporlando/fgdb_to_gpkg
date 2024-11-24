@@ -1,0 +1,36 @@
+name: Publish Python Package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Use the custom action to set up the Python environment
+      - name: Setup Python Environment
+        uses: ./.github/actions/setup-python-environment
+        with:
+          python-version: '3.12'
+          poetry-version: '1.8.4'
+
+      # Install only main dependencies
+      - name: Install Dependencies
+        run: poetry install --only main
+
+      # Run tests to verify the package
+      - name: Run Tests
+        run: poetry run pytest tests
+
+      # Publish to PyPI
+      - name: Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: poetry publish --build

@@ -1,0 +1,38 @@
+name: Publish to TestPyPI
+
+on:
+  push:
+    branches:
+      - main  # or the branch you want to test on (e.g., `develop`)
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Use the custom action to set up the Python environment
+      - name: Setup Python Environment
+        uses: ./.github/actions/setup-python-environment
+        with:
+          python-version: '3.12'
+          poetry-version: '1.8.4'
+
+      # Install only main dependencies
+      - name: Install Dependencies
+        run: poetry install --only main
+
+      # Run tests to verify the package
+      - name: Run Tests
+        run: poetry run pytest tests
+
+      # Publish to TestPyPI
+      - name: Publish to TestPyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        run: poetry publish --build --repository testpypi
