@@ -4,6 +4,18 @@
 
 This package does not have a dependency on ArcPy, which means that you can safely extract feature classes locked inside an Esri File GeoDataBase without needing to worry about any ArcGIS licensing.
 
+## Prerequisites
+
+This package requires [GDAL](https://gdal.org/) and its development libraries to be installed on your system **before** installing `fgdb_to_gpkg` or its dependencies. For more details please refer to the [official documentation](https://gdal.org/en/stable/download.html). 
+
+To confirm GDAL is installed, run:
+
+```bash
+gdalinfo --version
+# GDAL 3.8.4, released 2024/02/08
+```
+
+
 ## Installation
 
 #### Installing from PyPI
