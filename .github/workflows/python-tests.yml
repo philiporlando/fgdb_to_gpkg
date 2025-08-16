@@ -27,12 +27,13 @@ jobs:
         run: |
           apt-get update
           apt-get install -y \
+            python3 python3-pip python3-venv \
             build-essential \
             libgeos-dev \
             libproj-dev
 
       - name: Install uv
-        run: pip install uv
+        run: pip3 install uv
 
       - name: Sync environment with uv
         run: uv sync --extra dev
