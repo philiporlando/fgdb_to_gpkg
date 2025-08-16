@@ -6,46 +6,33 @@ authors = [
     { name = "Philip Orlando", email = "phlp.orlando@gmail.com" },
     { name = "Brandon Istenes", email = "bistenes@gmail.com" },
 ]
+requires-python = "~=3.10"
+readme = "README.md"
+dependencies = [
+    "fiona>=1.10.1",
+    "geodatasets>=2024.8.0",
+    "geopandas==1.1.1",
+    "pyogrio>=0.11.1",
+    "pytest>=7.4.4",
+    "tqdm>=4.67.1",
+]
 
 [project.urls]
 Repository = "https://github.com/philiporlando/fgdb_to_gpkg"
 Issues = "https://github.com/philiporlando/fgdb_to_gpkg/issues"
 
-[project.dependencies]
-fiona = "1.10.b2"
-geopandas = "0.12.2"
-[tool.poetry]
-name = "fgdb-to-gpkg"
-version = "0.3.2"
-description = "A lightweight Python package that converts Esri File GeoDataBases into OGC GeoPackages"
-authors = [
-    "Philip Orlando <phlp.orlando@gmail.com>",
-    "Brandon Istenes <bistenes@gmail.com>",
+[project.scripts]
+fgdb-to-gpkg = "fgdb_to_gpkg:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.2.2,<8",
+    "pytest-cov>=4.0.0,<5",
+    "pytest-mock>=3.12.0,<4",
+    "geodatasets>=2024.7.0,<2025",
+    "pyogrio", 
 ]
-readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-geopandas = "1.0"
-shapely = "^2.0.1"
-tqdm = "^4.65.0"
-argparse = "^1.4.0"
-fiona = "1.10b2"
-gdal = "3.6.3"
-numpy = "^1.26.0"
-geodatasets = "^2024.7.0"
-pyogrio = "^0.10.0"
-pandas = "^2.2.3"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.2.2"
-pytest-cov = "^4.0.0"
-pytest-mock = "^3.12.0"
-geodatasets = "^2024.7.0"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-fgdb-to-gpkg = "fgdb_to_gpkg:main"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

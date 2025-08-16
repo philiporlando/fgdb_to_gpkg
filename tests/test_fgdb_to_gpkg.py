@@ -51,7 +51,7 @@ def setup_fgdb_gpkg(naturalearth_land) -> tuple[str, str, list[str]]:
             gdf["layer_name"] = layer
             gdf.to_file(fgdb_path, layer=layer, driver="OpenFileGDB")
 
-        yield fgdb_path, gpkg_path, layer
+        yield fgdb_path, gpkg_path, layers
 
 
 def test_remove_gpkg_if_overwrite(setup_fgdb_gpkg: tuple[str, str, list[str]]):
@@ -65,53 +65,61 @@ def test_remove_gpkg_if_overwrite(setup_fgdb_gpkg: tuple[str, str, list[str]]):
 
 # Test for get_layer_lists function
 def test_get_layer_lists(setup_fgdb_gpkg: tuple[str, str, list[str]]):
-    fgdb_path, gpkg_path, _ = setup_fgdb_gpkg
-    fc_list, layer_list = get_layer_lists(fgdb_path, gpkg_path, False)
+    fgdb_path, gpkg_path, layers = setup_fgdb_gpkg
+    fc_list, _layer_list = get_layer_lists(fgdb_path, gpkg_path, False)
     # Check the returned lists as per your expectations
+    assert set(fc_list) == set(layers)
 
 
 # Test for convert_layer function
 def test_convert_layer(setup_fgdb_gpkg: tuple[str, str, list[str]]):
-    fgdb_path, gpkg_path, layer = setup_fgdb_gpkg
-    convert_layer(layer, fgdb_path, gpkg_path, False, [])
-    # Read and check if the layer was added to the GeoPackage
+    fgdb_path, gpkg_path, layers = setup_fgdb_gpkg
+    for layer in layers:
+        convert_layer(layer, fgdb_path, gpkg_path, False, [])
+        # Read and check if the layer was added to the GeoPackage
+        gdf = gpd.read_file(gpkg_path, layer=layer)
+        assert not gdf.empty, f"Layer {layer} should not be empty after conversion."
 
 
 def test_fgdb_to_gpkg(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
     # Test basic functionality of fgdb_to_gpkg
-    fgdb_path, gpkg_path, layer = setup_fgdb_gpkg
+    fgdb_path, gpkg_path, layers = setup_fgdb_gpkg
 
     fgdb_to_gpkg(fgdb_path, gpkg_path)
 
     # Read and compare data from File GeoDatabase and GeoPackage
-    gdf_fgdb = gpd.read_file(fgdb_path, layer=layer)
-    gdf_gpkg = gpd.read_file(gpkg_path, layer=layer)
-    assert gdf_fgdb.equals(gdf_gpkg)
+    for layer in layers:
+        gdf_fgdb = gpd.read_file(fgdb_path, layer=layer)
+        gdf_gpkg = gpd.read_file(gpkg_path, layer=layer)
+        assert gdf_fgdb.equals(gdf_gpkg)
 
 
-def test_fgdb_to_gpkg_overwrite(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
-    # Test the overwrite functionality of fgdb_to_gpkg
-    fgdb_path, gpkg_path, layer = setup_fgdb_gpkg
+def test_fgdb_to_gpkg_overwrite(setup_fgdb_gpkg: tuple[str, str, list[str]]):
+    # Test the overwrite functionality of fgdb_to_gpkg for all layers
+    fgdb_path, gpkg_path, layers = setup_fgdb_gpkg
 
-    # Convert the File GeoDatabase to a GeoPackage
+    # Convert the File GeoDatabase to a GeoPackage (initial conversion)
     fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True)
 
-    # Modify the original GeoDataFrame
-    gdf_modified = gpd.read_file(fgdb_path, layer=layer)
-    gdf_modified["new_column"] = "test"
+    for layer in layers:
+        # Modify the original GeoDataFrame for this layer
+        gdf_modified = gpd.read_file(fgdb_path, layer=layer)
+        gdf_modified["new_column"] = "test"
 
-    # Write the modified GeoDataFrame to File GeoDatabase
-    gdf_modified.to_file(fgdb_path, layer=layer, driver="OpenFileGDB")
+        # Write the modified GeoDataFrame to File GeoDatabase
+        gdf_modified.to_file(fgdb_path, layer=layer, driver="OpenFileGDB")
 
     # Convert the modified File GeoDatabase to GeoPackage with overwrite=False
     fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=False)
-    gdf_gpkg_no_overwrite = gpd.read_file(gpkg_path, layer=layer)
-    assert "new_column" not in gdf_gpkg_no_overwrite.columns
+    for layer in layers:
+        gdf_gpkg_no_overwrite = gpd.read_file(gpkg_path, layer=layer)
+        assert "new_column" not in gdf_gpkg_no_overwrite.columns
 
     # Convert the modified File GeoDatabase to GeoPackage with overwrite=True
     fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=True)
-    gdf_gpkg_overwrite = gpd.read_file(gpkg_path, layer=layer)
-    assert "new_column" in gdf_gpkg_overwrite.columns
+    for layer in layers:
+        gdf_gpkg_overwrite = gpd.read_file(gpkg_path, layer=layer)
+        assert "new_column" in gdf_gpkg_overwrite.columns
 
 
 def test_nonexistent_fgdb(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"]]):
@@ -133,7 +141,7 @@ def test_layer_already_exists(setup_fgdb_gpkg: tuple[str, str, Literal["test_fc"
 
     # Try converting again with overwrite=False
     # This should raise a warning because the layers already exists
-    with pytest.warns(UserWarning) as record:
+    with pytest.warns(UserWarning):
         fgdb_to_gpkg(fgdb_path, gpkg_path, overwrite=False)
 
 

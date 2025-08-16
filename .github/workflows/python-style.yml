@@ -17,7 +17,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
-        pip install black 
-    - name: Lint with Black
-      run: black --check . 
-      continue-on-error: true 
+        pip install ruff
+    - name: Lint with Ruff
+      run: ruff check .
+      continue-on-error: true
