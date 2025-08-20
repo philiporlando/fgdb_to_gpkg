@@ -38,7 +38,7 @@ pip install fgdb-to-gpkg
 2. Navigate to the repository directory: `cd fgdb_to_gdb`
 3. Install the package and its dependencies with [uv](https://astral.sh/uv):  
    ```bash
-   uv sync --extra dev
+   uv sync --group dev
    ```
 4. Optionally, install the package to be run globally with pipx: `pipx install --editable .`
 
