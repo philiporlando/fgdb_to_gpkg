@@ -1,12 +1,12 @@
 [project]
 name = "fgdb-to-gpkg"
-version = "0.4.4"
+version = "0.4.5"
 description = "A lightweight Python package that converts Esri File GeoDataBases into OGC GeoPackages"
 authors = [
     { name = "Philip Orlando", email = "phlp.orlando@gmail.com" },
     { name = "Brandon Istenes", email = "bistenes@gmail.com" },
 ]
-requires-python = "~=3.10"
+requires-python = ">=3.10"
 readme = "README.md"
 dependencies = [
     "fiona>=1.10.1",
