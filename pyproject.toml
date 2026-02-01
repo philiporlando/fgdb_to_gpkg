@@ -11,7 +11,7 @@ readme = "README.md"
 dependencies = [
     "fiona>=1.10.1",
     "geodatasets>=2024.8.0",
-    "geopandas==1.1.1",
+    "geopandas==1.1.2",
     "pyogrio>=0.11.1",
     "pytest>=7.4.4",
     "tqdm>=4.67.1",
